@@ -1,0 +1,21 @@
+{
+  "name": "serverless-demo-june-2019",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serverless.yml",
+  "author": "Ben New <ben@leftclick.com.au>",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-node src/test/run.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.27",
+    "aws-sdk": "^2.480.0",
+    "axios": "^0.19.0",
+    "serverless-api-stage": "^1.4.0",
+    "serverless-plugin-typescript": "^1.1.7",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  }
+}

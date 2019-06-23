@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "moduleResolution": "node",
+    "rootDir": "./",
+    "outDir": ".build",
+    "lib": ["es2015"],
+    "esModuleInterop": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "noImplicitAny": true
+  }
+}

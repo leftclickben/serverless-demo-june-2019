@@ -1,0 +1,76 @@
+service: serverless-demo-june-2019
+
+plugins:
+  - serverless-api-stage
+  - serverless-plugin-typescript
+
+custom:
+  stage: ${self:provider.stage}
+  stageSettings:
+    LoggingLevel: INFO
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: ap-southeast-2
+  environment:
+    NODE_ENV: ${self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+      Resource:
+        - Fn::GetAtt: [ ReportsTable, Arn ]
+    - Effect: Allow
+      Action:
+        - events:PutEvents
+      Resource: '*'
+
+functions:
+  listReports:
+    handler: src/handlers/http/reports.list
+    events:
+      - http:
+          path: reports/{category}
+          method: get
+          cors: true
+  createReport:
+    handler: src/handlers/http/reports.create
+    events:
+      - http:
+          path: reports/{category}
+          method: post
+          cors: true
+  reportsInserted:
+    handler: src/handlers/dynamodb/reports.inserted
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [ ReportsTable, StreamArn ]
+
+resources:
+  Resources:
+    ReportsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: reports_${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: categoryId
+            AttributeType: S
+          - AttributeName: eventTimestamp
+            AttributeType: N
+        KeySchema:
+          - KeyType: HASH
+            AttributeName: categoryId
+          - KeyType: RANGE
+            AttributeName: eventTimestamp
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
