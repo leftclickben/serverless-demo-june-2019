@@ -24,8 +24,8 @@ The stack utilises two plugins &mdash; [serverless-api-stage](https://github.com
 
 From a clone of this repository:
 
-1. `npm i -g serverless`
-2. `npm i`
+1. `npm install --global serverless`
+2. `npm install`
 3. `sls deploy`
 
 ## Test script
