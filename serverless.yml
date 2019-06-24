@@ -1,14 +1,18 @@
+# The name of our service, used in the name of resources such as the CloudFormation stack.
 service: serverless-demo-june-2019
 
+# We are using two plugins to illustrate how Serverless framework plugins work.
 plugins:
   - serverless-api-stage
   - serverless-plugin-typescript
 
+# These settings are used by the serverless-api-stage plugin.
 custom:
   stage: ${self:provider.stage}
   stageSettings:
     LoggingLevel: INFO
 
+# AWS-specific configuration, used as defaults for all functions.
 provider:
   name: aws
   runtime: nodejs10.x
@@ -30,6 +34,7 @@ provider:
         - events:PutEvents
       Resource: '*'
 
+# Our functions and the events that are configured to invoke them.
 functions:
   listReports:
     handler: src/handlers/http/reports.list
@@ -53,6 +58,8 @@ functions:
           arn:
             Fn::GetAtt: [ ReportsTable, StreamArn ]
 
+# Additional resources; this is standard CloudFormation.
+# In this case we are creating a DynamoDB table with a stream.
 resources:
   Resources:
     ReportsTable:
@@ -74,3 +81,5 @@ resources:
           WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_IMAGE
+
+# For more information, see https://serverless.com/framework/docs/providers/aws/guide/serverless.yml/
