@@ -11,7 +11,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/aws-lambda": "^8.10.27",
-    "aws-sdk": "^2.480.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.0",
     "serverless-api-stage": "^1.4.0",
     "serverless-plugin-typescript": "^1.1.7",
